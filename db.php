@@ -16,7 +16,8 @@ $users = [
             [ "id" => "22056", "name" => "ANGEL DAVID ALVARENGA MARTINEZ", "username" => "amartinez", "password" => "amartinez1", "status" => "active", "role" => "user" ],
             [ "id" => "21037", "name" => "LOURDES RAQUEL AGUIRRE", "username" => "laguirre", "password" => "laguirre1", "status" => "active", "role" => "user" ],
             [ "id" => "13174", "name" => "AMSI ABIGAIL URQUIA DURON", "username" => "aduron", "password" => "aduron1", "status" => "active", "role" => "user" ],
-            [ "id" => "15164", "name" => "DANIEL VLADIMIR HERNANDEZ SALGADO", "username" => "dsalgado", "password" => "dsalgado1", "status" => "active", "role" => "user" ]
+            [ "id" => "15164", "name" => "DANIEL VLADIMIR HERNANDEZ SALGADO", "username" => "dsalgado", "password" => "dsalgado1", "status" => "active", "role" => "user" ],
+            [ "id" => "00186", "name" => "DAVID GONZALES MALDONADO", "username" => "dmaldonado", "password" => "dmaldonado1", "status" => "active", "role" => "user" ]
         ]
     ],
     "MGR002" => [

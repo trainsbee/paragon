@@ -1,3 +1,4 @@
+<!-- PAUSES -->
 <?php 
 require_once 'settings.php';
 require_once 'db.php';
@@ -86,6 +87,224 @@ $users_json = json_encode($users);
     font-size: 24px;
     cursor: pointer;
   }
+  
+  /* Estilos extraídos de elementos inline */
+  .date-filter {
+    margin: 20px 0;
+  }
+  
+  .date-filter label {
+    margin-left: 10px;
+  }
+  
+  .date-filter button {
+    margin-left: 10px;
+  }
+  
+  .active-pauses-container {
+    margin: 20px 0;
+  }
+  
+  .employees-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .employees-table th {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .employees-table th.center {
+    text-align: center;
+  }
+  
+  .employees-table th.right {
+    text-align: right;
+  }
+  
+  .employees-table td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .employees-table td.center {
+    text-align: center;
+  }
+  
+  .employees-table td.right {
+    text-align: right;
+  }
+  
+  .active-pause {
+    color: #dc3545;
+    font-weight: 500;
+  }
+  
+  .inactive-pause {
+    color: #28a745;
+    font-weight: 500;
+  }
+  
+  .monospace {
+    font-family: monospace;
+  }
+  
+  .icon-button {
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+  
+  .icon-small {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .modal-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .modal-title {
+    margin: 0;
+  }
+  
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .pauses-summary {
+    margin-bottom: 20px;
+  }
+  
+  .history-container {
+    margin-top: 20px;
+  }
+  
+  .overflow-auto {
+    overflow-x: auto;
+  }
+  
+  .active-pauses-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .active-pauses-table th {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    background-color: #f2f2f2;
+  }
+  
+  .active-pauses-table td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .clickable-row {
+    cursor: pointer;
+  }
+  
+  .clickable-row:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .loading-cell {
+    text-align: center;
+    padding: 15px;
+  }
+  
+  .error-cell {
+    text-align: center;
+    color: #dc3545;
+  }
+  
+  .error-text {
+    color: red;
+  }
+  
+  .pause-summary-container {
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #f9f9f9;
+  }
+  
+  .pause-summary-title {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .pause-summary-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .pause-summary-table td {
+    padding: 8px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .pause-summary-label {
+    font-weight: 500;
+    width: 60%;
+  }
+  
+  .pause-summary-value {
+    text-align: right;
+    font-weight: 500;
+  }
+  
+  .pause-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .pause-table th {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .pause-table th.right {
+    text-align: right;
+  }
+  
+  .pause-table td {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .pause-table td.right {
+    text-align: right;
+  }
+  
+  .pause-table td.center {
+    text-align: center;
+  }
+  
+  .pause-active {
+    color: #28a745;
+    font-weight: 500;
+  }
+  
+  .pause-completed {
+    color: #6c757d;
+  }
 </style>
 </head>
 <body>
@@ -95,18 +314,18 @@ $users_json = json_encode($users);
     <h1>Cargando...</h1>
     <p>Por favor espere...</p>
     
-    <div style="margin: 20px 0;">
+    <div class="date-filter">
       <label for="start-date">Fecha de inicio:</label>
       <input type="date" id="start-date" value="<?php echo date('Y-m-d'); ?>">
       
-      <label for="end-date" style="margin-left: 10px;">Fecha de fin:</label>
+      <label for="end-date">Fecha de fin:</label>
       <input type="date" id="end-date" value="<?php echo date('Y-m-d'); ?>">
       
-      <button onclick="loadEmployees()" style="margin-left: 10px;">Filtrar</button>
+      <button onclick="loadEmployees()">Filtrar</button>
     </div>
     
     <!-- Sección de Pausas Activas -->
-    <div id="active-pauses-summary" style="margin: 20px 0;">
+    <div id="active-pauses-summary" class="active-pauses-container">
       <h2>Pausas Activas</h2>
       <div id="active-pauses-list">
         <p>Cargando pausas activas...</p>
@@ -114,20 +333,20 @@ $users_json = json_encode($users);
     </div>
     
     <h2>Empleados</h2>
-    <table id="employees-table" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+    <table id="employees-table" class="employees-table">
       <thead>
         <tr>
-          <th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Nombre</th>
-          <th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">ID</th>
-          <th style="text-align: center; padding: 8px; border-bottom: 1px solid #ddd;">Pausas Activas</th>
-          <th style="text-align: center; padding: 8px; border-bottom: 1px solid #ddd;">Total Pausas</th>
-          <th style="text-align: center; padding: 8px; border-bottom: 1px solid #ddd;">Tiempo Total</th>
-          <th style="text-align: right; padding: 8px; border-bottom: 1px solid #ddd;">Acciones</th>
+          <th>Nombre</th>
+          <th>ID</th>
+          <th class="center">Pausas Activas</th>
+          <th class="center">Total Pausas</th>
+          <th class="center">Tiempo Total</th>
+          <th class="right">Acciones</th>
         </tr>
       </thead>
       <tbody id="employees-list">
         <tr>
-          <td colspan="6" style="text-align: center; padding: 15px;">Cargando empleados...</td>
+          <td colspan="6" class="center">Cargando empleados...</td>
         </tr>
       </tbody>
     </table>
@@ -135,14 +354,14 @@ $users_json = json_encode($users);
   
   <!-- Pauses Modal -->
   <div id="pauses-modal" class="modal">
-    <div class="modal-content" style="max-width: 800px; width: 90%;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h2 style="margin: 0;">Pausas de <span id="employee-name"></span></h2>
-        <button onclick="closeModal()" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+    <div class="modal-content">
+      <div class="modal-header-container">
+        <h2 class="modal-title">Pausas de <span id="employee-name"></span></h2>
+        <button onclick="closeModal()" class="modal-close">&times;</button>
       </div>
       
       <!-- Resumen de Pausas -->
-      <div id="pauses-summary" style="margin-bottom: 20px;">
+      <div id="pauses-summary" class="pauses-summary">
         <p>Cargando resumen...</p>
       </div>
       
@@ -151,7 +370,7 @@ $users_json = json_encode($users);
         <p>Cargando pausas activas...</p>
       </div>
       
-      <div style="margin-top: 20px;">
+      <div class="history-container">
         <h3>Historial</h3>
         <div id="pauses-history">
           <p>Cargando historial de pausas...</p>
@@ -165,6 +384,16 @@ $users_json = json_encode($users);
     const users = <?php echo $users_json; ?>;
     let currentUser = null;
     let currentEmployeeId = '';
+
+const reasons = {
+  break: 'Break 15 minutos',
+  lunch: 'Almuerzo',
+  bathroom_outside: 'Baño afuera',
+  bathroom_office: 'Baño oficina',
+  meeting_manager: 'Reunión con gerente',
+  meeting_rrhh: 'Reunión con RRHH',
+  meeting_country_manager: 'Reunión con gerente de pais',
+};
 
     // Check authentication
     function checkAuth() {
@@ -252,7 +481,7 @@ $users_json = json_encode($users);
       // Show loading state
       employeesList.innerHTML = `
         <tr>
-          <td colspan="6" style="text-align: center; padding: 15px;">Cargando estadísticas de pausas...</td>
+          <td colspan="6" class="loading-cell">Cargando estadísticas de pausas...</td>
         </tr>`;
       activePausesList.innerHTML = '<p>Cargando pausas activas...</p>';
       
@@ -285,11 +514,11 @@ $users_json = json_encode($users);
         console.error('Error loading employee stats:', error);
         employeesList.innerHTML = `
           <tr>
-            <td colspan="6" style="text-align: center; color: #dc3545;">
+            <td colspan="6" class="error-cell">
               Error al cargar las estadísticas: ${error.message}
             </td>
           </tr>`;
-        activePausesList.innerHTML = '<p style="color: red;">Error al cargar las pausas activas.</p>';
+        activePausesList.innerHTML = '<p class="error-text">Error al cargar las pausas activas.</p>';
       }
       
       feather.replace();
@@ -308,21 +537,19 @@ $users_json = json_encode($users);
         
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td style="padding: 8px; border-bottom: 1px solid #eee;">${employee.name || 'N/A'}</td>
-          <td style="padding: 8px; border-bottom: 1px solid #eee;">${employee.id || 'N/A'}</td>
-          <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: center; color: ${employeeStats.active_pauses > 0 ? '#dc3545' : '#28a745'}; font-weight: 500;">
+          <td>${employee.name || 'N/A'}</td>
+          <td>${employee.id || 'N/A'}</td>
+          <td class="center ${employeeStats.active_pauses > 0 ? 'active-pause' : 'inactive-pause'}">
             ${employeeStats.active_pauses}
           </td>
-          <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: center;">
+          <td class="center">
             ${employeeStats.total_pauses}
           </td>
-          <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: center; font-family: monospace;">
+          <td class="center monospace">
             ${employeeStats.total_pause_time || '00:00:00'}
           </td>
-          <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: right;">
-            <button class="btn" onclick="viewPauses('${employee.id}', '${(employee.name || '').replace(/'/g, "\\'")}')" style="padding: 4px 8px; font-size: 13px;">
-              <i data-feather="eye" style="width: 14px; height: 14px;"></i> Ver
-            </button>
+          <td class="right">
+            <button class="btn icon-button" onclick="viewPauses('${employee.id}', '${(employee.name || '').replace(/'/g, "\\'")}')"><i data-feather="eye" class="icon-small"></i> Ver</button>
           </td>
         `;
         employeesList.appendChild(row);
@@ -352,15 +579,15 @@ $users_json = json_encode($users);
       }
       
       let tableHTML = `
-        <div style="overflow-x: auto;">
-          <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+        <div class="overflow-auto">
+          <table class="active-pauses-table">
             <thead>
-              <tr style="background-color: #f2f2f2;">
-                <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Empleado</th>
-                <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Departamento</th>
-                <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Hora de Inicio</th>
-                <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Tiempo Transcurrido</th>
-                <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Razón</th>
+              <tr>
+                <th>Empleado</th>
+                <th>Departamento</th>
+                <th>Hora de Inicio</th>
+                <th>Tiempo Transcurrido</th>
+                <th>Razón</th>
               </tr>
             </thead>
             <tbody>
@@ -373,31 +600,24 @@ $users_json = json_encode($users);
             const displayTime = pause.display_time || (pause.start_time.includes('T') 
               ? pause.start_time.split('T')[1].split('.')[0] 
               : pause.start_time);
+              
             
             tableHTML += `
-              <tr style="border-bottom: 1px solid #eee;" 
-                  onclick="viewPauses('${emp.id}', '${emp.name.replace(/'/g, "\\'")}')" 
-                  style="cursor: pointer;" 
-                  onmouseover="this.style.backgroundColor='#f9f9f9'" 
-                  onmouseout="this.style.backgroundColor='transparent'">
-                <td style="padding: 10px;${isFirst ? 'border-top: 1px solid #eee;' : ''}">${isFirst ? emp.name : ''}</td>
-                <td style="padding: 10px;${isFirst ? 'border-top: 1px solid #eee;' : ''}">${isFirst ? (emp.department || 'N/A') : ''}</td>
-                <td style="padding: 10px;${isFirst ? 'border-top: 1px solid #eee;' : ''}">${displayTime}</td>
-                <td style="padding: 10px;${isFirst ? 'border-top: 1px solid #eee;' : ''}" class="elapsed-time" data-start="${pause.start_time}">00:00:00</td>
-                <td style="padding: 10px;${isFirst ? 'border-top: 1px solid #eee;' : ''}">${pause.reason || 'Sin razón'}</td>
+              <tr class="clickable-row" onclick="viewPauses('${emp.id}', '${emp.name.replace(/'/g, "\\'")}')">                
+                <td>${isFirst ? emp.name : ''}</td>
+                <td>${isFirst ? (emp.department || 'N/A') : ''}</td>
+                <td>${displayTime}</td>
+                <td class="elapsed-time" data-start="${pause.start_time}">00:00:00</td>
+                <td>${reasons[pause.reason]|| 'Sin razón'}</td>
               </tr>
             `;
           });
         } else {
           tableHTML += `
-            <tr style="border-bottom: 1px solid #eee;" 
-                onclick="viewPauses('${emp.id}', '${emp.name.replace(/'/g, "\\'")}')" 
-                style="cursor: pointer;" 
-                onmouseover="this.style.backgroundColor='#f9f9f9'" 
-                onmouseout="this.style.backgroundColor='transparent'">
-              <td style="padding: 10px;">${emp.name}</td>
-              <td style="padding: 10px;">${emp.department || 'N/A'}</td>
-              <td style="padding: 10px;" colspan="3">Sin pausas activas</td>
+            <tr class="clickable-row" onclick="viewPauses('${emp.id}', '${emp.name.replace(/'/g, "\\'")}')">              
+              <td>${emp.name}</td>
+              <td>${emp.department || 'N/A'}</td>
+              <td colspan="3">Sin pausas activas</td>
             </tr>
           `;
         }
@@ -503,20 +723,20 @@ $users_json = json_encode($users);
         const formattedPauseTime = `${hours}h ${minutes}m ${seconds}s`;
         
         document.getElementById('pauses-summary').innerHTML = `
-          <div style="margin-bottom: 20px; border: 1px solid #e0e0e0; border-radius: 5px; padding: 15px; background-color: #f9f9f9;">
-            <h3 style="margin-top: 0; color: #333; border-bottom: 1px solid #e0e0e0; padding-bottom: 10px; margin-bottom: 15px;">Resumen de Pausas</h3>
-            <table style="width: 100%; border-collapse: collapse;">
+          <div class="pause-summary-container">
+            <h3 class="pause-summary-title">Resumen de Pausas</h3>
+            <table class="pause-summary-table">
               <tr>
-                <td style="padding: 8px; border-bottom: 1px solid #e0e0e0; font-weight: 500; width: 60%;">Total de Pausas:</td>
-                <td style="padding: 8px; border-bottom: 1px solid #e0e0e0; text-align: right; font-weight: 500;">${allPauses.length}</td>
+                <td class="pause-summary-label">Total de Pausas:</td>
+                <td class="pause-summary-value">${allPauses.length}</td>
               </tr>
               <tr>
-                <td style="padding: 8px; border-bottom: 1px solid #e0e0e0; font-weight: 500;">Tiempo Total en Pausa:</td>
-                <td style="padding: 8px; border-bottom: 1px solid #e0e0e0; text-align: right; font-weight: 500;">${formattedPauseTime}</td>
+                <td class="pause-summary-label">Tiempo Total en Pausa:</td>
+                <td class="pause-summary-value">${formattedPauseTime}</td>
               </tr>
               <tr>
-                <td style="padding: 8px; font-weight: 500;">Pausas Activas:</td>
-                <td style="padding: 8px; text-align: right; font-weight: 500;">${activePauses.length}</td>
+                <td class="pause-summary-label">Pausas Activas:</td>
+                <td class="pause-summary-value">${activePauses.length}</td>
               </tr>
             </table>
           </div>
@@ -526,16 +746,16 @@ $users_json = json_encode($users);
           activePausesList.innerHTML = 'No hay pausas activas';
         } else {
           activePausesList.innerHTML = `
-            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <table class="pause-table">
               <thead>
                 <tr>
-                  <th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Razón</th>
-                  <th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Inicio</th>
-                  <th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Tiempo</th>
-                  <th style="text-align: right; padding: 8px; border-bottom: 1px solid #ddd;">Estado</th>
+                  <th>Razón</th>
+                  <th>Inicio</th>
+                  <th>Tiempo</th>
+                  <th class="right">Estado</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody> 
                 ${activePauses.map(pause => {
                   const startTime = new Date(pause.start_time);
                   const formattedTime = startTime.toLocaleTimeString('es-HN', { 
@@ -546,12 +766,12 @@ $users_json = json_encode($users);
                   });
                   return `
                     <tr>
-                      <td style="padding: 8px; border-bottom: 1px solid #eee;">${pause.reason || 'Sin razón'}</td>
-                      <td style="padding: 8px; border-bottom: 1px solid #eee;">${formattedTime}</td>
-                      <td style="padding: 8px; border-bottom: 1px solid #eee;">
+                      <td>${reasons[pause.reason]|| 'Sin razón'}</td>
+                      <td>${formattedTime}</td>
+                      <td>
                         <span class="elapsed-time" data-start="${pause.start_time}">${formatDuration(pause.start_time)}</span>
                       </td>
-                      <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: center; color: #28a745; font-weight: 500;">
+                      <td class="center pause-active">
                         En progreso
                       </td>
                     </tr>
@@ -569,14 +789,14 @@ $users_json = json_encode($users);
           pausesHistoryList.innerHTML = 'No hay historial de pausas';
         } else {
           pausesHistoryList.innerHTML = `
-            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <table class="pause-table">
               <thead>
                 <tr>
-                  <th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Razón</th>
-                  <th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Inicio</th>
-                  <th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Fin</th>
-                  <th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Duración</th>
-                  <th style="text-align: right; padding: 8px; border-bottom: 1px solid #ddd;">Estado</th>
+                  <th>Razón</th>
+                  <th>Inicio</th>
+                  <th>Fin</th>
+                  <th>Duración</th>
+                  <th class="right">Estado</th>
                 </tr>
               </thead>
               <tbody>
@@ -584,19 +804,24 @@ $users_json = json_encode($users);
                   const startTime = new Date(pause.start_time);
                   const endTime = new Date(pause.end_time);
                   const durationMs = endTime - startTime;
-                  const durationMinutes = Math.floor(durationMs / (1000 * 60));
-                  const durationSeconds = Math.floor((durationMs % (1000 * 60)) / 1000);
+                  // Use Math.round() for more accurate second calculation
+                  const totalSeconds = Math.round(durationMs / 1000);
+                  const hours = Math.floor(totalSeconds / 3600);
+                  const minutes = Math.floor((totalSeconds % 3600) / 60);
+                  const seconds = totalSeconds % 60;
+                  const reasonText = reasons[pause.reason] || pause.reason;
                   return `
                     <tr>
-                      <td style="padding: 8px; border-bottom: 1px solid #eee;">${pause.reason || 'Sin razón'}</td>
-                      <td style="padding: 8px; border-bottom: 1px solid #eee;">
+                      <td>${reasonText || 'Sin razón'}</td>
+                      <td>
                         ${startTime.toLocaleTimeString('es-HN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                       </td>
-                      <td style="padding: 8px; border-bottom: 1px solid #eee;">
+                      <td>
                         ${endTime.toLocaleTimeString('es-HN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                       </td>
-                      <td style="padding: 8px; border-bottom: 1px solid #eee;">${durationMinutes} min ${durationSeconds} seg</td>
-                      <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: right; color: #6c757d;">Completada</td>
+                     
+                      <td>${hours}h ${minutes}m ${seconds}s</td>
+                      <td class="right pause-completed">Completada</td>
                     </tr>
                   `;
                 }).join('')}

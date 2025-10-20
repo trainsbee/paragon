@@ -1,9 +1,12 @@
 const API_URL = 'api';
 const reasons = {
+  break: 'Break 15 minutos',
   lunch: 'Almuerzo',
   bathroom_outside: 'Baño afuera',
   bathroom_office: 'Baño oficina',
-  break: 'Break 15 minutos'
+  meeting_manager: 'Reunión con gerente',
+  meeting_rrhh: 'Reunión con RRHH',
+  meeting_country_manager: 'Reunión con gerente de pais',
 };
 
 let currentPause = null;
@@ -153,6 +156,7 @@ function updatePauseControls(hasActivePause) {
   const startBtn = document.getElementById('start-pause');
   const stopBtn = document.getElementById('stop-pause');
   const reasonSelect = document.getElementById('reason');
+
   
   if (hasActivePause) {
     startBtn.disabled = true;
@@ -216,18 +220,80 @@ async function fetchPauses() {
     }
     
     const data = await response.json();
-    
-    if (!data.success) {
+
+    // pausas de baño y break
+    const importantPauses = data.data.filter(pause => 
+      pause.reason === 'bathroom_outside' || pause.reason === 'break' || pause.reason === 'bathroom_office'
+    );
+    // solo fecha actual
+
+    // Obtener la fecha de hoy en Honduras en formato YYYY-MM-DD
+const hondurasDate = new Date().toLocaleDateString("es-HN", {
+  timeZone: "America/Tegucigalpa",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit"
+});
+const parts = hondurasDate.split("/");
+const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+
+// Filtrar solo pausas que tengan end_time y sean del día de hoy en Honduras
+const todayPauses = importantPauses.filter(pause => 
+    pause.end_time != null &&
+    pause.start_time.startsWith(formattedDate)
+);
+
+// Función para obtener la diferencia en segundos entre dos tiempos
+function getSecondsDiff(start, end) {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    return (endDate - startDate) / 1000; // diferencia en segundos
+}
+
+// Sumar todas las pausas
+const totalSeconds = todayPauses.reduce(
+    (total, pause) => total + Math.round(getSecondsDiff(pause.start_time, pause.end_time)),
+    0
+);
+
+// Convertir segundos totales a horas, minutos y segundos
+const hours = Math.floor(totalSeconds / 3600);
+const minutes = Math.floor((totalSeconds % 3600) / 60);
+const seconds = Math.floor(totalSeconds % 60);
+
+// Mostrar el total de pausas en el HTML
+const totalPauseTime = `${hours}h ${minutes}m ${seconds}s`;
+if(totalSeconds < 15 * 60){
+   document.getElementById('total-pause-time-two').style.color = 'green';
+   document.getElementById('total-pause-time-two').textContent = 'Hoy Has estado en pausa: '+totalPauseTime + ' Excelente';
+}else if(totalSeconds > 15 * 60 && totalSeconds < 30 * 60){
+   document.getElementById('total-pause-time-two').style.color = 'orange';
+   document.getElementById('total-pause-time-two').textContent = 'Tu tiempo de pausa ha llegado a: '+totalPauseTime + ' Cuida tu tiempo de pausa';
+}else if(totalSeconds >30 * 60){
+   document.getElementById('total-pause-time-two').style.color = 'red';
+   document.getElementById('total-pause-time-two').textContent = 'Excediste el tiempo de pausa: '+totalPauseTime + ' Por favor, detén la pausa';
+
+   
+    const startBtn = document.getElementById('start-pause');
+    const stopBtn = document.getElementById('stop-pause');
+    const select = document.getElementById('reason');
+    select.disabled = true;
+    startBtn.disabled = true;
+    stopBtn.disabled = true;
+   
+}
+
+if (!data.success) {
       throw new Error(data.message || 'Error al cargar las pausas');
-    }
+}
     
-    const pauses = data.data || [];
-    const pauseList = document.getElementById('pause-list');
-    pauseList.innerHTML = '';
+const pauses = data.data || [];
+const pauseList = document.getElementById('pause-list');
+pauseList.innerHTML = '';
     
-    // Verificar si hay pausas activas (sin end_time)
-    const activePause = pauses.find(pause => !pause.end_time);
-    if (activePause) {
+// Verificar si hay pausas activas (sin end_time)
+const activePause = pauses.find(pause => !pause.end_time);
+if (activePause) {
       currentPause = {
         id: activePause.pause_id,
         reason: activePause.reason,
@@ -315,10 +381,10 @@ async function fetchPauses() {
           hour12: false,
           timeZone: 'America/Tegucigalpa'
         });
-        
+        //mostrar la razón de la pausa en la tarjeta
         card.innerHTML = `
           <div class="pause-info">
-            <div><span class="label">Razón:</span> ${reasonText}</div>
+            <div><span class="label">Razón:</span> ${reasonText} </div>
             <div><span class="label">Inicio:</span> ${startTime} - ${pause.end_time ? endText : 'En curso'}</div>
             ${pause.end_time ? `<div><span class="label">Duración:</span> ${durationText}</div>` : ''}
           </div>
