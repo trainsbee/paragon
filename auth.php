@@ -4,19 +4,63 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - Pausa App</title>
-  <link rel="stylesheet" href="assets/css/app.css">
-
+  <link rel="stylesheet" href="assets/css/main.css">
+  <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>Iniciar Sesión</h1>
-    <form id="login-form" onsubmit="login(event)">
-      <input type="text" id="username" name="username" placeholder="Usuario" required>
-      <input type="password" id="password" name="password" placeholder="Contraseña" required>
-      <button type="submit">Iniciar Sesión</button>
-      <p id="error-message" style="color: red; display: none;"></p>
-    </form>
-  </div>
+
+    <div class="auth-layout">
+        <!-- Columna Izquierda - Formulario -->
+        <div class="auth-form-column">
+            <div class="main-content login">
+                <!-- LOGIN FORM WITH HEADER, BODY, FOOTER -->
+                <div class="form-container">
+                    <div class="form-header">
+                        <h2><i data-feather="log-in"></i> Iniciar Sesión</h2>
+                    </div>
+                    <form onsubmit="handleLogin(event)">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label for="username">Usuario</label>
+                                <input type="text" id="username" placeholder="Ingrese su usuario" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Contraseña</label>
+                                <input type="password" id="password" placeholder="Ingrese su contraseña" required>
+                            </div>
+                        </div>
+                        <div class="form-footer">
+                            <button type="button" class="btn-secondary"><i data-feather="x"></i> Cancelar</button>
+                            <button type="submit" class="btn-primary"><i data-feather="log-in"></i> Entrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Columna Derecha - Contenido Promocional -->
+        <div class="auth-promo-column">
+            <div class="promo-content">
+                <div class="testimonial">
+                    <blockquote>
+                        "PausaApp ha transformado la gestión de descansos en nuestra empresa. 
+                        La seguridad y el rendimiento mejoran todo y aumentan mi confianza en lo que estoy construyendo."
+                    </blockquote>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <span>JS</span>
+                        </div>
+                        <div class="author-info">
+                            <strong>@juanscott</strong>
+                            <span>Director de Operaciones</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- NOTIFICATION CONTAINER -->
+    <div id="notification-container"></div>
   <script>
   // Check if user is already logged in
   document.addEventListener('DOMContentLoaded', () => {
@@ -24,9 +68,14 @@
     if (user) {
       window.location.href = 'dashboard.php';
     }
+    
+    // Initialize Feather Icons
+    if (typeof feather !== 'undefined') {
+      feather.replace();
+    }
   });
 
-  async function login(event) {
+  async function handleLogin(event) {
     event.preventDefault();
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
@@ -46,17 +95,60 @@
       if (data.success) {
         // Store user data in localStorage
         localStorage.setItem('currentUser', JSON.stringify(data.user));
-        window.location.href = 'dashboard.php';
+        showNotification('success', '¡Inicio de sesión exitoso!');
+        
+        setTimeout(() => {
+          window.location.href = 'dashboard.php';
+        }, 4000);
       } else {
-        errorMessage.textContent = data.message || 'Usuario o contraseña incorrectos';
-        errorMessage.style.display = 'block';
+        showNotification('error', 'Error: ' + data.message);
+
       }
     } catch (error) {
       console.error('Error:', error);
-      errorMessage.textContent = 'Error al conectar con el servidor';
-      errorMessage.style.display = 'block';
+      showNotification('error', 'Error al conectar con el servidor');
     }
   }
   </script>
+   
+    <script>
+             // Enhanced Notification System
+        let notificationTimeout;
+        
+        function showNotification(type, message) {
+            const container = document.getElementById('notification-container');
+            container.innerHTML = '';
+            
+            if (notificationTimeout) {
+                clearTimeout(notificationTimeout);
+            }
+            
+            const icons = {
+                'success': 'check-circle',
+                'error': 'x-circle',
+                'warning': 'alert-triangle',
+                'info': 'info'
+            };
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `<i data-feather="${icons[type]}"></i> <span>${message}</span>`;
+            
+            container.appendChild(notification);
+            feather.replace({ width: 18, height: 18 });
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            notificationTimeout = setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.remove();
+                }, 400);
+            }, 3500);
+        }
+   
+    </script>
 </body>
 </html>

@@ -153,6 +153,7 @@
     #stop-pause.active:hover:not(:disabled) {
       background-color: #dc2626;
     }
+
     .loader-overlay {
       position: absolute;
       top: 0;
