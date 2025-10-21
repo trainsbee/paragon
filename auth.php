@@ -30,7 +30,6 @@
                             </div>
                         </div>
                         <div class="form-footer">
-                            <button type="button" class="btn-secondary"><i data-feather="x"></i> Cancelar</button>
                             <button type="submit" class="btn-primary"><i data-feather="log-in"></i> Entrar</button>
                         </div>
                     </form>

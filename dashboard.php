@@ -5,312 +5,110 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pausa App</title>
+  <link rel="stylesheet" href="assets/css/main.css">
   <script src="https://unpkg.com/feather-icons"></script>
   <script>
     const router = "<?php echo BASE_URL; ?>";
     console.log(router);
   </script>
-  <style>
-    :root {
-      --bg-primary: #0a0a0a;
-      --bg-secondary: #141414;
-      --bg-tertiary: #1a1a1a;
-      --border-color: #2a2a2a;
-      --text-primary: #e5e5e5;
-      --text-secondary: #a0a0a0;
-      --text-muted: #6b6b6b;
-      --accent-primary: #6366f1;
-      --accent-hover: #4f46e5;
-      --success: #10b981;
-      --danger: #ef4444;
-      --warning: #f59e0b;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    nav {
-      background-color: var(--bg-secondary);
-      padding: 1rem 2rem;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .nav-left h1 {
-      font-size: 1.25rem;
-      font-weight: 500;
-    }
-
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-size: 0.875rem;
-    }
-
-    .user-info span {
-      color: var(--text-secondary);
-    }
-
-    .logout-btn {
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.875rem;
-      padding: 0.5rem;
-      transition: color 0.2s;
-    }
-
-    .logout-btn:hover {
-      color: var(--text-primary);
-    }
-
-    .container {
-      max-width: 600px;
-      width: 100%;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-
-    .pause-controls {
-      background-color: var(--bg-secondary);
-      padding: 1.5rem;
-      border-radius: 0.5rem;
-      border: 1px solid var(--border-color);
-      position: relative;
-      margin-bottom: 2rem;
-    }
-
-    .controls-content {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    select, button {
-      padding: 0.75rem;
-      border-radius: 0.375rem;
-      font-size: 0.875rem;
-      border: 1px solid var(--border-color);
-      background-color: var(--bg-tertiary);
-      color: var(--text-primary);
-      transition: all 0.2s;
-    }
-
-    select:focus, button:focus {
-      outline: none;
-      border-color: var(--accent-primary);
-    }
-
-    button {
-      background-color: var(--accent-primary);
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-
-    button:hover:not(:disabled) {
-      background-color: var(--accent-hover);
-    }
-
-    button:disabled {
-      background-color: var(--bg-tertiary);
-      color: var(--text-muted);
-      cursor: not-allowed;
-    }
-
-    #stop-pause.active {
-      background-color: var(--danger);
-    }
-
-    #stop-pause.active:hover:not(:disabled) {
-      background-color: #dc2626;
-    }
-    .loader-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(20, 20, 20, 0.9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 0.5rem;
-      transition: opacity 0.3s ease;
-      z-index: 100;
-    }
-
-    .loader-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .loader {
-      border: 3px solid var(--border-color);
-      border-top: 3px solid var(--accent-primary);
-      border-radius: 50%;
-      width: 2rem;
-      height: 2rem;
-      animation: spin 1s linear infinite;
-    }
-
-    .loader-text {
-      color: var(--text-secondary);
-      font-size: 0.875rem;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .range-container {
-      display: flex;
-      gap: 0.75rem;
-      align-items: center;
-      background-color: var(--bg-secondary);
-      padding: 1rem;
-      border-radius: 0.375rem;
-      border: 1px solid var(--border-color);
-      margin-bottom: 1rem;
-    }
-
-    .range-container label {
-      color: var(--text-secondary);
-      font-size: 0.875rem;
-    }
-
-    .range-container input[type="date"] {
-      padding: 0.5rem;
-      border: 1px solid var(--border-color);
-      border-radius: 0.375rem;
-      background-color: var(--bg-tertiary);
-      color: var(--text-primary);
-      font-size: 0.875rem;
-    }
-
-    .filter-button {
-      background-color: var(--accent-primary);
-      color: var(--text-primary);
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 0.375rem;
-      cursor: pointer;
-      font-size: 0.875rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .filter-button:hover {
-      background-color: var(--accent-hover);
-    }
-
-    .filter-button:disabled {
-      background-color: var(--bg-tertiary);
-      color: var(--text-muted);
-    }
-
-    .total-pause-time, .total-pause-time-two {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-      margin-bottom: 1rem;
-    }
-
-    .total-pause-time-two.green {
-      color: var(--success);
-    }
-
-    .total-pause-time-two.orange {
-      color: var(--warning);
-    }
-
-    .total-pause-time-two.red {
-      color: var(--danger);
-    }
-
-    h2 {
-      font-size: 1.25rem;
-      font-weight: 500;
-      margin-bottom: 1rem;
-      color: var(--text-primary);
-    }
-
-    .date-header {
-      font-size: 1rem;
-      color: var(--text-secondary);
-      margin: 1.5rem 0 0.5rem;
-    }
-
-    .card {
-      background-color: var(--bg-secondary);
-      padding: 1rem;
-      border-radius: 0.375rem;
-      border: 1px solid var(--border-color);
-      margin-bottom: 0.5rem;
-      font-size: 0.875rem;
-    }
-
-    .card.in-progress {
-      border-left: 3px solid var(--accent-primary);
-    }
-
-    .pause-info {
-      display: grid;
-      gap: 0.25rem;
-    }
-
-    .pause-info .label {
-      color: var(--text-muted);
-      margin-right: 0.5rem;
-    }
-  </style>
+  
 </head>
 <body>
-  <nav>
-    <div class="nav-left">
-      <h1>Pausa App</h1>
-    </div>
-    <div class="user-info">
-      <span id="user-name"></span>
-      <span id="user-role"></span>
-      <span id="user-department"></span>
-      <button class="logout-btn" onclick="logout()">
-        <i data-feather="log-out" style="width: 1rem; height: 1rem;"></i>
-        Cerrar Sesión
-      </button>
-    </div>
-  </nav>
+          <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-brand">Dashboard</div>
+        
+        <div class="navbar-center">
+            <div class="search-container">
+                <i data-feather="search" class="search-icon"></i>
+                <input type="text" class="search-input" placeholder="Buscar...">
+            </div>
+        </div>
+
+        <div class="navbar-links" id="navbarLinks">
+            <a href="#"><i data-feather="home"></i> <span>Inicio</span></a>
+            <a href="#"><i data-feather="users"></i> <span>Usuarios</span></a>
+            <a href="#"><i data-feather="settings"></i> <span>Config</span></a>
+            <a href="#" onclick="logout()"><i data-feather="log-out"></i> <span>Salir</span></a>
+        </div>
+
+        <button class="menu-toggle" id="menuToggle">
+            <i data-feather="menu"></i>
+        </button>
+    </nav>
+<div class="admin-content">
+            <div class="card pauses">
+               
+                  <div class="form-container form-switch">
+            <div class="form-header">
+                <h2><i data-feather="pause"></i> Administrador de Pausas</h2>
+            </div>
+            <div class="form-body">
+                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">
+                    Puedes crear tus pausas aquí, recuerda organizarte bien para que no te quedes sin pausa (:
+                </p>
+            </div>
+            <div class="form-footer">
+               <div class="form-group">
+                    <select>
+                        <option>Opción 1</option>
+                        <option>Opción 2</option>
+                        <option>Opción 3</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+                   
+                </div>
+                <div class="profile">
+                <h3>Pausas 18 de octubre</h3>
+                <div class="info-row">
+                    <span class="info-label">Razón:</span>
+                    <span class="info-value">Break 15 minutos</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Fecha:</span>
+                    <span class="info-value">18 de octubre</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Hora:</span>
+                    <span class="info-value">12:00</span>
+                </div>
+            </div>
+             <div class="profile">
+                <h3>Pausas 17 de octubre</h3>
+                <div class="info-row">
+                    <span class="info-label">Razón:</span>
+                    <span class="info-value">Break 15 minutos</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Fecha:</span>
+                    <span class="info-value">17 de octubre - 18 de octubre</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Hora:</span>
+                    <span class="info-value">12:00</span>
+                </div>
+            </div>
+            </div>
+            <div class="card">
+                <h3>Actividad</h3>
+                <div class="info-row">
+                    <span class="info-label">Sesiones hoy:</span>
+                    <span class="info-value">342</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Nuevos registros:</span>
+                    <span class="info-value">28</span>
+                </div>
+            </div>
+        </div>
 
   <div class="container">
     <div id="pause-controls" class="pause-controls">
@@ -331,14 +129,15 @@
           <option value="meeting_rrhh">Reunión con RRHH</option>
           <option value="meeting_country_manager">Reunión con gerente de país</option>
         </select>
-        <button id="start-pause" onclick="startPause()">
-          <i data-feather="play" style="width: 1rem; height: 1rem;"></i>
-          Iniciar Pausa
-        </button>
-        <button id="stop-pause" onclick="stopPause()" disabled>
-          <i data-feather="square" style="width: 1rem; height: 1rem;"></i>
-          Detener Pausa
-        </button>
+        
+        <div class="switch-container">
+          <span class="switch-label">Control de Pausa:</span>
+          <label class="switch">
+            <input type="checkbox" id="pause-switch" onchange="togglePause()">
+            <span class="slider"></span>
+          </label>
+          <span id="switch-status" class="switch-status inactive">Inactiva</span>
+        </div>
       </div>
     </div>
 
@@ -396,16 +195,32 @@
       return null;
     }
 
+    async function togglePause() {
+      const pauseSwitch = document.getElementById('pause-switch');
+      const isChecked = pauseSwitch.checked;
+
+      if (isChecked) {
+        // Iniciar pausa
+        await startPause();
+      } else {
+        // Detener pausa
+        await stopPause();
+      }
+    }
+
     async function startPause() {
       const reason = document.getElementById('reason').value;
       if (!reason) {
         alert('Por favor, selecciona una razón');
+        // Revertir el switch si no hay razón seleccionada
+        document.getElementById('pause-switch').checked = false;
         return;
       }
 
       const employeeId = getCurrentEmployeeId();
       if (!employeeId) {
         alert('Error: No se pudo identificar al empleado. Por favor, inicia sesión nuevamente.');
+        document.getElementById('pause-switch').checked = false;
         window.location.href = 'login.html';
         return;
       }
@@ -436,10 +251,7 @@
             status: 'in_progress'
           };
 
-          document.getElementById('start-pause').disabled = true;
-          document.getElementById('stop-pause').disabled = false;
-          document.getElementById('reason').disabled = true;
-
+          updateSwitchState(true);
           await fetchPauses();
         } else {
           throw new Error(data.message || 'Error al iniciar la pausa');
@@ -447,18 +259,22 @@
       } catch (error) {
         console.error('Error al iniciar la pausa:', error);
         alert('Error al iniciar la pausa: ' + error.message);
+        // Revertir el switch en caso de error
+        document.getElementById('pause-switch').checked = false;
       }
     }
 
     async function stopPause() {
       if (!currentPause) {
         console.error('No hay pausa activa para detener');
+        document.getElementById('pause-switch').checked = true;
         return;
       }
 
       const employeeId = getCurrentEmployeeId();
       if (!employeeId) {
         alert('Error: No se pudo identificar al empleado. Por favor, inicia sesión nuevamente.');
+        document.getElementById('pause-switch').checked = true;
         window.location.href = 'login.html';
         return;
       }
@@ -493,11 +309,7 @@
 
         if (data.success) {
           currentPause = null;
-          document.getElementById('start-pause').disabled = false;
-          document.getElementById('stop-pause').disabled = true;
-          document.getElementById('reason').value = '';
-          document.getElementById('reason').disabled = false;
-
+          updateSwitchState(false);
           await fetchPauses();
         } else {
           throw new Error(data.message || 'Error al detener la pausa');
@@ -505,25 +317,32 @@
       } catch (error) {
         console.error('Error al detener la pausa:', error);
         alert('Error al detener la pausa: ' + error.message);
+        // Revertir el switch en caso de error
+        document.getElementById('pause-switch').checked = true;
+      }
+    }
+
+    function updateSwitchState(isActive) {
+      const pauseSwitch = document.getElementById('pause-switch');
+      const switchStatus = document.getElementById('switch-status');
+      const reasonSelect = document.getElementById('reason');
+
+      pauseSwitch.checked = isActive;
+      
+      if (isActive) {
+        switchStatus.textContent = 'Activa';
+        switchStatus.className = 'switch-status active';
+        reasonSelect.disabled = true;
+      } else {
+        switchStatus.textContent = 'Inactiva';
+        switchStatus.className = 'switch-status inactive';
+        reasonSelect.disabled = false;
+        reasonSelect.value = '';
       }
     }
 
     function updatePauseControls(hasActivePause) {
-      const startBtn = document.getElementById('start-pause');
-      const stopBtn = document.getElementById('stop-pause');
-      const reasonSelect = document.getElementById('reason');
-
-      if (hasActivePause) {
-        startBtn.disabled = true;
-        stopBtn.disabled = false;
-        reasonSelect.disabled = true;
-        stopBtn.classList.add('active');
-      } else {
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
-        reasonSelect.disabled = false;
-        stopBtn.classList.remove('active');
-      }
+      updateSwitchState(hasActivePause);
     }
 
     function showLoading(show) {
@@ -575,7 +394,7 @@
         const data = await response.json();
 
         const importantPauses = data.data.filter(pause =>
-          pause.reason === 'bathroom_outside' || pause.reason === 'Break 15 minutos' || pause.reason === 'bathroom_office'
+          pause.reason === 'bathroom_outside' || pause.reason === 'break' || pause.reason === 'bathroom_office'
         );
 
         const hondurasDate = new Date().toLocaleDateString("es-HN", {

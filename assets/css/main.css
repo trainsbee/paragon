@@ -31,7 +31,7 @@
         /* NAVBAR */
         .navbar {
             background: var(--bg-secondary);
-            padding: 0.75rem 1.5rem;
+            height: 64px;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
@@ -206,6 +206,27 @@
             overflow: hidden;
         }
 
+        
+        .form-switch{
+            max-width: 100%;
+        }
+        .form-switch .form-body{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .form-switch .form-group{
+            width: 100%;
+        }
+        .form-switch .form-group select{
+            width: 100%;
+        }
+        .form-switch .form-group:last-child {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+        }
+
         .form-header {
             padding: 1rem 1.5rem;
             border-bottom: 1px solid var(--border-color);
@@ -241,17 +262,11 @@
             gap: 0.625rem;
         }
 
-        .form-group {
-            margin-bottom: 1rem;
-        }
+      
 
-        .form-group:last-child {
-            margin-bottom: 0;
-        }
 
         label {
             display: block;
-            margin-bottom: 0.5rem;
             color: var(--text-secondary);
             font-size: 0.8125rem;
             font-weight: 500;
@@ -293,6 +308,7 @@
             font-size: 0.8125rem;
             font-weight: 500;
             white-space: nowrap;
+            width: 100%;
         }
 
         button:hover {
@@ -304,7 +320,7 @@
             transform: translateY(0);
         }
 
-        button i {
+      svg {
             width: 16px;
             height: 16px;
         }
@@ -684,9 +700,10 @@
 
         .switch {
             position: relative;
-            display: inline-block;
-            width: 40px;
-            height: 22px;
+    display: inline-block;
+    width: 60px;
+    height: 26px;
+    align-items: center;
         }
 
         .switch input {
@@ -708,15 +725,15 @@
         }
 
         .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 3px;
-            bottom: 3px;
-            background: white;
-            transition: .3s;
-            border-radius: 50%;
+           position: absolute;
+           content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 3px;
+    background: white;
+    transition: .3s;
+    border-radius: 50%;
         }
 
         input:checked + .slider {
@@ -724,7 +741,7 @@
         }
 
         input:checked + .slider:before {
-            transform: translateX(18px);
+            transform: translateX(32px);
         }
 
         .profile, .card {
@@ -751,7 +768,8 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1rem;
-            margin: 2rem 0;
+             margin: 70px auto;
+             width: 70%;
         }
 
         @media (max-width: 640px) {
@@ -790,10 +808,11 @@
         }
 
         .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.625rem 0;
-            border-bottom: 1px solid var(--border-color);
+                display: flex
+;
+    justify-content: space-between;
+    padding: 0.625rem 0;
+    border-bottom: 1px solid var(--border-color);
         }
 
         .info-row:last-child {
@@ -943,4 +962,7 @@ input:-webkit-autofill:active {
     caret-color: #f1f1f1 !important; /* color del cursor */
     transition: background-color 9999s ease-in-out 0s !important;
     border: 1px solid #333 !important; /* opcional: mismo borde que tus inputs normales */
+}
+.card.pauses .profile{
+    background: var(--bg-primary);
 }
