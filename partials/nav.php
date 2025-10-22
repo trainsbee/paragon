@@ -19,51 +19,29 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Construir el menú de navegación
     let navbarHTML = `
-        <nav>
-            <div>
-                <div>
-                    <a href="dashboard.php">Sistema de Pausas</a>
-                </div>
-                
-                <div>
-                    <ul>
-                        ${isAdmin ? `
-                            <!-- Enlaces para administradores -->
-                            <li>
-                                <a href="dashboard.php">Dashboard</a>
-                            </li>
-                            <li>
-                                <a href="pauses.php">Todas las Pausas</a>
-                            </li>
-                            <li>
-                                <a href="users.php">Usuarios</a>
-                            </li>
-                            <li>
-                                <a href="reports.php">Reportes</a>
-                            </li>
-                        ` : `
-                            <!-- Enlaces para usuarios normales -->
-                            <li>
-                                <a href="dashboard.php">Mis Pausas</a>
-                            </li>
-                        `}
-                        
-                        <!-- Enlace de cierre de sesión común -->
-                        <li>
-                            <a href="#" onclick="logout()">Cerrar Sesión</a>
-                        </li>
-                    </ul>
-                    
-                    <!-- Información del usuario -->
-                    <div>
-                        <span>${currentUser.name || 'Usuario'}</span>
-                        <span>
-                            ${isAdmin ? 'Administrador' : 'Usuario'}
-                        </span>
+            <nav class="navbar">
+                <div class="navbar-brand">Dashboard</div>
+                <div class="navbar-center">
+                    <div class="search-container">
+                        <i data-feather="search" class="search-icon"></i>
+                        <input type="text" class="search-input" placeholder="Buscar...">
                     </div>
                 </div>
-            </div>
-        </nav>
+                <div class="navbar-links" id="navbarLinks">
+                    <a href="dashboard.php"><i data-feather="grid"></i> <span>Dashboard</span></a>
+                     ${isAdmin ? `
+                    <a href="pauses.php"><i data-feather="pause"></i> <span>Pausas</span></a>
+                    ` : ''}
+                ${isAdmin ? `
+                    <a href="permissions.php"><i data-feather="lock"></i> <span>Permisos</span></a>
+                    ` : ''}
+                    <a href="profile.php"><i data-feather="user"></i> <span>Perfil</span></a>
+                    <a href="#" onclick="logout()"><i data-feather="log-out"></i> <span>Salir</span></a>
+                </div>
+                <button class="menu-toggle" id="menuToggle">
+                    <i data-feather="menu"></i>
+                </button>
+            </nav>
     `;
     
     // Insertar el menú en el contenedor
@@ -75,4 +53,5 @@ function logout() {
     localStorage.removeItem('currentUser');
     window.location.href = 'auth.php';
 }
+  feather.replace();
 </script>

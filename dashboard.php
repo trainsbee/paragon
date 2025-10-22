@@ -15,27 +15,7 @@
 </head>
 <body>
           <!-- NAVBAR -->
-    <nav class="navbar">
-        <div class="navbar-brand">Dashboard</div>
-        
-        <div class="navbar-center">
-            <div class="search-container">
-                <i data-feather="search" class="search-icon"></i>
-                <input type="text" class="search-input" placeholder="Buscar...">
-            </div>
-        </div>
-
-        <div class="navbar-links" id="navbarLinks">
-            <a href="#"><i data-feather="home"></i> <span>Inicio</span></a>
-            <a href="#"><i data-feather="users"></i> <span>Usuarios</span></a>
-            <a href="#"><i data-feather="settings"></i> <span>Config</span></a>
-            <a href="#" onclick="logout()"><i data-feather="log-out"></i> <span>Salir</span></a>
-        </div>
-
-        <button class="menu-toggle" id="menuToggle">
-            <i data-feather="menu"></i>
-        </button>
-    </nav>
+  <?php require_once 'partials/nav.php'; ?>
 <div class="admin-content">
             <div class="card pauses">
                
@@ -50,23 +30,31 @@
             </div>
             <div class="form-footer" id="footer-switch">
                <div class="form-group">
-                    <select>
-                        <option>Opción 1</option>
-                        <option>Opción 2</option>
-                        <option>Opción 3</option>
-                    </select>
+                  <select id="reason" required>
+                  <option value="" disabled selected>Selecciona una razón</option>
+                  <option value="break">Break 15 minutos</option>
+                  <option value="lunch">Almuerzo</option>
+                  <option value="bathroom_outside">Baño afuera</option>
+                  <option value="bathroom_office">Baño oficina</option>
+                  <option value="meeting_manager">Reunión con gerente</option>
+                  <option value="meeting_rrhh">Reunión con RRHH</option>
+                  <option value="meeting_country_manager">Reunión con gerente de país</option>
+                  </select>
                 </div>
 
                 <div class="form-group">
                     <label class="switch">
-                        <input type="checkbox">
+                        <input type="checkbox" id="pause-switch" onchange="togglePause()">
                         <span class="slider"></span>
                     </label>
+                    <span id="switch-status" class="switch-status inactive">Inactiva</span>
                 </div>
             </div>
                    
                 </div>
-                <div class="profile time-pauses">
+              <div class="profile time-pauses">
+                <div class="form-container">
+            <div class="form-header">
                 <h3>Stadistics</h3>
                 <div class="info-row">
                     <div class="box">
@@ -81,40 +69,81 @@
                       <h4 id="total-remaining-time">0</h4>
                       <p>Tiempo restante</p>
                     </div>
-                </div>
+              </div>
             </div>
-             <div class="profile">
-                <h3>Pausas 17 de octubre</h3>
-                <div class="info-row">
-                    <span class="info-label">Razón:</span>
-                    <span class="info-value">Break 15 minutos</span>
+            <form class="filter-date range-container" id="filter-form">
+                <div class="form-body">
+                    <div class="form-group">
+                        <label>FROM</label>
+                        <input type="date" value="<?php 
+                        $today = new DateTime('now', new DateTimeZone(TIMEZONE));
+                        echo $today->format('Y-m-d');
+                        ?>" id="start-date">
+                    </div>
+                    <div class="form-group">
+                        <label>TO</label>
+                        <input type="date" value="<?php 
+                        $today = new DateTime('now', new DateTimeZone(TIMEZONE));
+                        echo $today->format('Y-m-d');
+                        ?>" id="end-date">
+                    </div>
                 </div>
-                <div class="info-row">
-                    <span class="info-label">Fecha:</span>
-                    <span class="info-value">17 de octubre - 18 de octubre</span>
+                <div class="form-footer">
+                    <button type="submit" class="filter-button">
+                        <i data-feather="filter" style="width: 1rem; height: 1rem;"></i>
+                        Filtrar
+                    </button>
                 </div>
-                <div class="info-row">
-                    <span class="info-label">Hora:</span>
-                    <span class="info-value">12:00</span>
-                </div>
-              </div>
-              <div class="profile">
-                <h3>Pausas 16 de octubre</h3>
-                <div class="info-row">
-                    <span class="info-label">Razón:</span>
-                    <span class="info-value">Break 15 minutos</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Fecha:</span>
-                    <span class="info-value">17 de octubre - 18 de octubre</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Hora:</span>
-                    <span class="info-value">12:00</span>
-                </div>
-              </div>
+            </form>
+        </div>
+</div>
+<style>
+.loader{
+	display: flex;
+	flex-direction: row;
+  justify-content: center;
+}
 
-            </div>
+.loader span{
+	background: #ecf0f6;
+	border: 1pz solid rgba(144,163,204,0.24);
+	height: 20px;
+	width: 8px;
+	margin-left: 4px;
+	transform-origin: center center;
+	animation: .8s ease spinner1 999;
+}
+
+.loader .spinner2{
+	animation-delay: .1s;
+}
+
+.loader .spinner3{
+	animation-delay: .2s;
+}
+
+@keyframes spinner1{
+	0%,50%{
+		transform: scaleX(1) scaleY(1);
+	}
+	25%{
+		transform: scaleX(1.2) scaleY(1.6);
+		background: #90a3cc;
+		border-color: #335890;
+	}
+}
+</style>
+<div class="box-pause">
+  <div class="loader">
+    <span class="spinner1"></span>
+    <span class="spinner2"></span>
+    <span class="spinner3"></span>
+  </div>
+  <div id="pause-list"></div>
+</div>
+
+ 
+</div>
             <div class="card">
                 <h3>Actividad <span id="user-name"></span> <span id="user-role"></span><span id="user-department"></span></h3>
                 <div class="info-row">
@@ -127,65 +156,10 @@
                 </div>
             </div>
         </div>
-
-  <div class="container">
-    <div id="pause-controls" class="pause-controls">
-      <div class="loader-overlay" style="display: flex;">
-        <div class="loader-container">
-          <div class="loader"></div>
-          <span class="loader-text">Cargando pausas...</span>
-        </div>
-      </div>
-      <div class="controls-content" id="controls-content">
-        <select id="reason" required>
-          <option value="" disabled selected>Selecciona una razón</option>
-          <option value="break">Break 15 minutos</option>
-          <option value="lunch">Almuerzo</option>
-          <option value="bathroom_outside">Baño afuera</option>
-          <option value="bathroom_office">Baño oficina</option>
-          <option value="meeting_manager">Reunión con gerente</option>
-          <option value="meeting_rrhh">Reunión con RRHH</option>
-          <option value="meeting_country_manager">Reunión con gerente de país</option>
-        </select>
-        
-        <div class="switch-container">
-          <span class="switch-label">Control de Pausa:</span>
-          <label class="switch">
-            <input type="checkbox" id="pause-switch" onchange="togglePause()">
-            <span class="slider"></span>
-          </label>
-          <span id="switch-status" class="switch-status inactive">Inactiva</span>
-        </div>
-      </div>
-    </div>
-
-    <h2>Pausas Registradas</h2>
-    <form class="range-container" id="filter-form">
-      <label for="date-range">Rango de fechas:</label>
-      <input type="date" id="start-date" value="<?php 
-        $today = new DateTime('now', new DateTimeZone(TIMEZONE));
-        echo $today->format('Y-m-d');
-      ?>">
-      <input type="date" id="end-date" value="<?php 
-        echo $today->format('Y-m-d');
-      ?>">
-      <button type="submit" class="filter-button">
-        <i data-feather="filter" style="width: 1rem; height: 1rem;"></i>
-        Filtrar
-      </button>
-    </form>
-    <!-- <div class="total-pause-time">
-      <span id="total-pause-time">Total de pausas: </span>
-    </div> -->
-    <!-- <div class="total-pause-time-two">
-      <span id="total-pause-time-two">Total de tiempo de pausas: </span>
-    </div> -->
-
-    <div id="pause-list"></div>
   </div>
 
   <script>
-    feather.replace();
+  
 
     const API_URL = router + 'api';
     const reasons = {
@@ -364,15 +338,18 @@
     }
 
     function showLoading(show) {
-      const loaderOverlay = document.querySelector('.loader-overlay');
+      const loader = document.querySelector('.loader');
+      const pauseList = document.getElementById('pause-list');
       if (show) {
-        loaderOverlay.style.display = 'flex';
-        loaderOverlay.style.opacity = '1';
+        loader.style.display = 'flex';
+        loader.style.opacity = '1';
+        pauseList.style.display = 'none';
       } else {
-        loaderOverlay.style.opacity = '0';
+        loader.style.opacity = '0';
         setTimeout(() => {
-          loaderOverlay.style.display = 'none';
-        }, 300);
+          loader.style.display = 'none';
+          pauseList.style.display = 'block';
+        }, 400);
       }
     }
 
@@ -440,22 +417,21 @@
 
         const totalPauseTime = `${hours}h ${minutes}m ${seconds}s`;
         const totalPauseElementTwo = document.getElementById('message-time-pause');
-        const controlsContent = document.getElementById('controls-content');
 
         console.log(importantPauses);
 
         if (totalSeconds < 15 * 60) {
           totalPauseElementTwo.className = 'total-pause-time-two clr-success';
           totalPauseElementTwo.textContent = `Hoy has estado en pausa: ${totalPauseTime} - Excelente`;
-          controlsContent.style.display = 'flex';
+         
         } else if (totalSeconds >= 15 * 60 && totalSeconds < 40 * 60) {
           totalPauseElementTwo.className = 'total-pause-time-two clr-warning';
           totalPauseElementTwo.textContent = `Tu tiempo de pausa ha llegado a: ${totalPauseTime} - Cuida tu tiempo de pausa`;
-          controlsContent.style.display = 'flex';
+      
         } else if (totalSeconds >= 30 * 60) {
           totalPauseElementTwo.className = 'total-pause-time-two clr-danger';
           totalPauseElementTwo.textContent = `Excediste el tiempo de pausa: ${totalPauseTime} - Por favor, detén la pausa`;
-          controlsContent.style.display = 'none';
+        
           document.getElementById('footer-switch').style.display = 'none';
         }
 
@@ -509,8 +485,9 @@
           pauseList.appendChild(dateHeader);
 
           dailyPauses.forEach(pause => {
+            //CREA UNA CAJA PARA CADA PAUSA
             const card = document.createElement('div');
-            card.className = `card ${!pause.end_time ? 'in-progress' : ''}`;
+            card.className = `profile ${!pause.end_time ? 'in-progress' : ''}`;
 
             let endText = '';
             let durationText = '';
@@ -553,11 +530,12 @@
             });
 
             card.innerHTML = `
-              <div class="pause-info">
-                <div><span class="label">Razón:</span> ${reasonText}</div>
-                <div><span class="label">Inicio:</span> ${startTime} - ${pause.end_time ? endText : 'En curso'}</div>
-                ${pause.end_time ? `<div><span class="label">Duración:</span> ${durationText}</div>` : ''}
+              <h3>${reasonText}</h3>
+              <div class="info-row">
+                <span class="info-label">Inicio:</span>
+                <span class="info-value">${startTime} - ${pause.end_time ? endText : 'En curso'}</span>
               </div>
+              ${pause.end_time ? `<div class="info-row"><span class="info-label">Duración:</span><span class="info-value">${durationText}</span></div>` : ''}
             `;
 
             pauseList.appendChild(card);
