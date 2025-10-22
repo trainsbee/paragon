@@ -768,9 +768,7 @@
         }
 
         .profile p {
-            margin: 0.5rem 0;
             color: var(--text-secondary);
-            font-size: 0.875rem;
         }
 
         .admin-content {
@@ -986,4 +984,16 @@ input:-webkit-autofill:active {
 .time-pauses .box:nth-child(3){
     border: 1px solid var(--danger);
     color: var(--danger);
+}
+.profile.time-pauses .info-row{
+    gap: 10px;
+}
+.profile.time-pauses .info-row .box{
+    text-align: center;
+    width: 33.33%;
+    padding: 5px 0;
+    border-radius: 5px;
+}
+.profile.time-pauses .info-row .box p{
+    font-size: 14px;
 }

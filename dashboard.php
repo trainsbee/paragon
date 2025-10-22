@@ -70,16 +70,16 @@
                 <h3>Stadistics</h3>
                 <div class="info-row">
                     <div class="box">
-                      <h4>12</h4>
-                      <p>Pauses</p>
+                      <h4 id="total-pause-time">0</h4>
+                      <p>Pausas activas</p>
                     </div>
                     <div class="box">
-                      <h4>12</h4>
-                      <p>Pauses</p>
+                      <h4 id="total-consumed-time">0</h4>
+                      <p>Tiempo consumido</p>
                     </div>
                     <div class="box">
-                      <h4>12</h4>
-                      <p>Pauses</p>
+                      <h4 id="total-remaining-time">0</h4>
+                      <p>Tiempo restante</p>
                     </div>
                 </div>
             </div>
@@ -174,9 +174,9 @@
         Filtrar
       </button>
     </form>
-    <div class="total-pause-time">
+    <!-- <div class="total-pause-time">
       <span id="total-pause-time">Total de pausas: </span>
-    </div>
+    </div> -->
     <!-- <div class="total-pause-time-two">
       <span id="total-pause-time-two">Total de tiempo de pausas: </span>
     </div> -->
@@ -575,9 +575,9 @@
           if (minutes > 0 || hours > 0) timeString.push(`${minutes}m`);
           timeString.push(`${seconds}s`);
 
-          totalPauseElement.textContent = `Tiempo total en pausas: ${timeString.join(' ')}`;
+          totalPauseElement.textContent = `${timeString.join(' ')}`;
         } else {
-          totalPauseElement.textContent = 'No hay pausas registradas en el rango de fechas';
+          totalPauseElement.textContent = '0';
         }
       } catch (error) {
         console.error('Error fetching pauses:', error);
