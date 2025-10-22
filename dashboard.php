@@ -44,11 +44,11 @@
                 <h2><i data-feather="pause"></i> Administrador de Pausas</h2>
             </div>
             <div class="form-body">
-                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">
+                <p id="message-time-pause" style="font-size: 0.875rem; margin-bottom: 1rem;">
                     Puedes crear tus pausas aquí, recuerda organizarte bien para que no te quedes sin pausa (:
                 </p>
             </div>
-            <div class="form-footer">
+            <div class="form-footer" id="footer-switch">
                <div class="form-group">
                     <select>
                         <option>Opción 1</option>
@@ -66,19 +66,21 @@
             </div>
                    
                 </div>
-                <div class="profile">
-                <h3>Pausas 18 de octubre</h3>
+                <div class="profile time-pauses">
+                <h3>Stadistics</h3>
                 <div class="info-row">
-                    <span class="info-label">Razón:</span>
-                    <span class="info-value">Break 15 minutos</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Fecha:</span>
-                    <span class="info-value">18 de octubre</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Hora:</span>
-                    <span class="info-value">12:00</span>
+                    <div class="box">
+                      <h4>12</h4>
+                      <p>Pauses</p>
+                    </div>
+                    <div class="box">
+                      <h4>12</h4>
+                      <p>Pauses</p>
+                    </div>
+                    <div class="box">
+                      <h4>12</h4>
+                      <p>Pauses</p>
+                    </div>
                 </div>
             </div>
              <div class="profile">
@@ -95,10 +97,26 @@
                     <span class="info-label">Hora:</span>
                     <span class="info-value">12:00</span>
                 </div>
-            </div>
+              </div>
+              <div class="profile">
+                <h3>Pausas 16 de octubre</h3>
+                <div class="info-row">
+                    <span class="info-label">Razón:</span>
+                    <span class="info-value">Break 15 minutos</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Fecha:</span>
+                    <span class="info-value">17 de octubre - 18 de octubre</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Hora:</span>
+                    <span class="info-value">12:00</span>
+                </div>
+              </div>
+
             </div>
             <div class="card">
-                <h3>Actividad</h3>
+                <h3>Actividad <span id="user-name"></span> <span id="user-role"></span><span id="user-department"></span></h3>
                 <div class="info-row">
                     <span class="info-label">Sesiones hoy:</span>
                     <span class="info-value">342</span>
@@ -159,9 +177,9 @@
     <div class="total-pause-time">
       <span id="total-pause-time">Total de pausas: </span>
     </div>
-    <div class="total-pause-time-two">
+    <!-- <div class="total-pause-time-two">
       <span id="total-pause-time-two">Total de tiempo de pausas: </span>
-    </div>
+    </div> -->
 
     <div id="pause-list"></div>
   </div>
@@ -421,23 +439,24 @@
         const seconds = Math.floor(totalSeconds % 60);
 
         const totalPauseTime = `${hours}h ${minutes}m ${seconds}s`;
-        const totalPauseElementTwo = document.getElementById('total-pause-time-two');
+        const totalPauseElementTwo = document.getElementById('message-time-pause');
         const controlsContent = document.getElementById('controls-content');
 
         console.log(importantPauses);
 
         if (totalSeconds < 15 * 60) {
-          totalPauseElementTwo.className = 'total-pause-time-two green';
+          totalPauseElementTwo.className = 'total-pause-time-two clr-success';
           totalPauseElementTwo.textContent = `Hoy has estado en pausa: ${totalPauseTime} - Excelente`;
           controlsContent.style.display = 'flex';
-        } else if (totalSeconds >= 15 * 60 && totalSeconds < 30 * 60) {
-          totalPauseElementTwo.className = 'total-pause-time-two orange';
+        } else if (totalSeconds >= 15 * 60 && totalSeconds < 40 * 60) {
+          totalPauseElementTwo.className = 'total-pause-time-two clr-warning';
           totalPauseElementTwo.textContent = `Tu tiempo de pausa ha llegado a: ${totalPauseTime} - Cuida tu tiempo de pausa`;
           controlsContent.style.display = 'flex';
         } else if (totalSeconds >= 30 * 60) {
-          totalPauseElementTwo.className = 'total-pause-time-two red';
+          totalPauseElementTwo.className = 'total-pause-time-two clr-danger';
           totalPauseElementTwo.textContent = `Excediste el tiempo de pausa: ${totalPauseTime} - Por favor, detén la pausa`;
           controlsContent.style.display = 'none';
+          document.getElementById('footer-switch').style.display = 'none';
         }
 
         if (!data.success) {

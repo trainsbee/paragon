@@ -12,8 +12,17 @@
             --danger: #ef4444;
             --warning: #f59e0b;
             --info: #3b82f6;
+            --message-time-pause: #3b82f6;
         }
-
+        .clr-success{
+            color: var(--success);
+        }
+        .clr-warning{
+            color: var(--warning);
+        }
+        .clr-danger{
+            color: var(--danger);
+        }
         * {
             box-sizing: border-box;
             margin: 0;
@@ -965,4 +974,16 @@ input:-webkit-autofill:active {
 }
 .card.pauses .profile{
     background: var(--bg-primary);
+}
+.time-pauses .box:nth-child(1){
+    border: 1px solid var(--success);
+    color: var(--success);
+}
+.time-pauses .box:nth-child(2){
+    border: 1px solid var(--warning);
+    color: var(--warning);
+}
+.time-pauses .box:nth-child(3){
+    border: 1px solid var(--danger);
+    color: var(--danger);
 }
