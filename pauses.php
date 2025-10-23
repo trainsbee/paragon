@@ -16,28 +16,55 @@ $users_json = json_encode($users);
 </head>
 <body>
       <!-- NAVBAR -->
-  <?php include 'partials/nav.php'; ?>
+  <?php include 'partials/nav.php veriifcar la fecha del modal los segundos'; ?>
 
   <div class="main-content">
-    <div class="form-container filter-date">
-      <div class="form-header">
+    <div class="card module-pauses">
+      <div class="form-container filter-date">
+      <div class="form-header time-pauses">
         <h2><i data-feather="filter"></i> Filtro de Fechas</h2>
+                <h3>Stadistics</h3>
+                <div class="info-row">
+                    <div class="box">
+                      <h4 id="total-pause-time">0</h4>
+                      <p>Pausas activas</p>
+                    </div>
+                    <div class="box">
+                      <h4 id="total-consumed-time">0</h4>
+                      <p>Tiempo consumido</p>
+                    </div>
+                    <div class="box">
+                      <h4 id="total-remaining-time">0</h4>
+                      <p>Tiempo restante</p>
+                    </div>
+              </div>
       </div>
       <div class="form-body">
+                    <div class="form-group">
+                        <label>FROM</label>
+                        <input type="date" value="<?php 
+                        $today = new DateTime('now', new DateTimeZone(TIMEZONE));
+                        echo $today->format('Y-m-d');
+                        ?>" id="start-date">
+                    </div>
+                    <div class="form-group">
+                        <label>TO</label>
+                        <input type="date" value="<?php 
+                        $today = new DateTime('now', new DateTimeZone(TIMEZONE));
+                        echo $today->format('Y-m-d');
+                        ?>" id="end-date">
+                    </div>
         <div class="form-group">
-          <label for="start-date">Fecha de inicio:</label>
-          <input type="date" id="start-date" value="<?php echo date('Y-m-d'); ?>">
-        </div>
-        <div class="form-group">
-          <label for="end-date">Fecha de fin:</label>
-          <input type="date" id="end-date" value="<?php echo date('Y-m-d'); ?>">
-        </div>
-        <div class="form-group">
-          <button class="btn-primary" onclick="loadEmployees()">Filtrar</button>
+          <label>ACTION</label>
+          <button type="submit" class="filter-button" onclick="loadEmployees()">
+                        <i data-feather="filter" style="width: 1rem; height: 1rem;"></i>
+                        Filtrar
+                    </button>
         </div>
       </div>
     </div>
-    <div class="card">
+    </div>
+    <div class="card" hidden>
       <div class="profile">
         <p></p>
       </div>
@@ -80,6 +107,8 @@ $users_json = json_encode($users);
       </div>
     </div>
   </div>
+</div>
+    
 
   <div class="modal-overlay" id="pauses-modal">
     <div class="modal-center">
@@ -284,7 +313,7 @@ $users_json = json_encode($users);
         row.innerHTML = `
           <td>${employee.name || 'N/A'}</td>
           <td>${employee.id || 'N/A'}</td>
-          <td class="${employeeStats.active_pauses > 0 ? 'clr-success' : 'clr-danger'}">
+          <td class="${employeeStats.active_pauses > 0 ? 'clr-danger' : ''}">
             ${employeeStats.active_pauses}
           </td>
           <td>${employeeStats.total_pauses}</td>
@@ -346,8 +375,8 @@ $users_json = json_encode($users);
                 <td>${isFirst ? emp.name : ''}</td>
                 <td>${isFirst ? (emp.department || 'N/A') : ''}</td>
                 <td>${displayTime}</td>
-                <td class="elapsed-time" data-start="${pause.start_time}">00:00:00</td>
-                <td>${reasons[pause.reason] || 'Sin razón'}</td>
+                <td class="elapsed-time clr-warning" data-start="${pause.start_time}">00:00:00</td>
+                <td class="clr-warning" >${reasons[pause.reason] || 'Sin razón'}</td>
               </tr>
             `;
           });
@@ -448,6 +477,7 @@ $users_json = json_encode($users);
         
         const hours = Math.floor(totalPauseSeconds / 3600);
         const minutes = Math.floor((totalPauseSeconds % 3600) / 60);
+        //redondea 
         const seconds = totalPauseSeconds % 60;
         const formattedPauseTime = `${hours}h ${minutes}m ${seconds}s`;
         
@@ -497,7 +527,7 @@ $users_json = json_encode($users);
                       <td>
                         <span class="elapsed-time" data-start="${pause.start_time}">${formatDuration(pause.start_time)}</span>
                       </td>
-                      <td class="clr-success">En progreso</td>
+                      <td class="clr-warning">En progreso</td>
                     </tr>
                   `;
                 }).join('')}

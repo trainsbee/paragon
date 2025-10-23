@@ -52,7 +52,7 @@
             </div>
                    
                 </div>
-              <div class="profile time-pauses">
+          <div class="profile time-pauses">
                 <div class="form-container">
             <div class="form-header">
                 <h3>Stadistics</h3>
