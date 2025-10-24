@@ -26,16 +26,16 @@ $users_json = json_encode($users);
                 <h3>Stadistics</h3>
                 <div class="info-row">
                     <div class="box">
-                      <h4 id="total-pause-time">0</h4>
-                      <p>Pausas activas</p>
+                      <h4 id="total-pauses">0</h4>
+                      <p>Total Pausas</p>
                     </div>
                     <div class="box">
                       <h4 id="total-consumed-time">0</h4>
                       <p>Tiempo consumido</p>
                     </div>
                     <div class="box">
-                      <h4 id="total-remaining-time">0</h4>
-                      <p>Tiempo restante</p>
+                      <h4 id="total-pause-active">0</h4>
+                      <p>Pausas Activas</p>
                     </div>
               </div>
       </div>
@@ -343,38 +343,64 @@ $users_json = json_encode($users);
       feather.replace();
     }
 
-    function renderEmployeesTable(employees, stats) {
-      const employeesList = document.getElementById('employees-list');
-      const totalPauseTime = document.getElementById('total-pause-time'); 
-      employeesList.innerHTML = '';
-      let totalPauseTimeGlobal = 0;
-      employees.forEach(employee => {
-        const employeeStats = stats[employee.id] || {
-          active_pauses: 0,
-          total_pauses: 0,
-          total_pause_time: '00:00:00'
-        };
-       //console.log(employeeStats.total_pause_time);
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${employee.name || 'N/A'}</td>
-          <td>${employee.id || 'N/A'}</td>
-          <td class="${employeeStats.active_pauses > 0 ? 'clr-danger' : ''}">
-            ${employeeStats.active_pauses}
-          </td>
-          <td>${employeeStats.total_pauses}</td>
-          <td>${employeeStats.total_pause_time || '00:00:00'}</td>
-          <td>
-            <button class="btn-primary" onclick="viewPauses('${employee.id}', '${(employee.name || '').replace(/'/g, "\\'")}')"><i data-feather="eye"></i> Ver</button>
-          </td>
-        `;
-        employeesList.appendChild(row);
-        // SUMAR TODO LOS TIEMPOS DE PAUSA DE TODOS LOS EMPLEADOS
-       // totalPauseTimeGlobal += convertToSeconds(employeeStats.total_pause_time);
-      });
-      //totalPauseTime.textContent = formatTime(totalPauseTimeGlobal);
+function renderEmployeesTable(employees, stats) {
+  const employeesList = document.getElementById('employees-list');
+  const totalPauses = document.getElementById('total-pauses');
+  const totalPauseTimeConsumed = document.getElementById('total-consumed-time');
+  const totalPauseActive = document.getElementById('total-pause-active');
+  
+  employeesList.innerHTML = '';
+  let totalPauseTimeConsumedGlobal = 0;
+  let totalPausesGlobal = 0;
+  let totalPauseActiveGlobal = 0;
 
-    }
+  employees.forEach(employee => {
+    const employeeStats = stats[employee.id] || {
+      active_pauses: 0,
+      total_pauses: 0,
+      total_pause_time: '00:00:00'
+    };
+
+    // Convertir tiempo a segundos y sumar
+    totalPauseTimeConsumedGlobal += timeToSeconds(employeeStats.total_pause_time);
+    totalPausesGlobal += employeeStats.total_pauses;
+    totalPauseActiveGlobal += employeeStats.active_pauses;
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${employee.name || 'N/A'}</td>
+      <td>${employee.id || 'N/A'}</td>
+      <td class="${employeeStats.active_pauses > 0 ? 'clr-danger' : ''}">
+        ${employeeStats.active_pauses}
+      </td>
+      <td>${employeeStats.total_pauses}</td>
+      <td>${employeeStats.total_pause_time || '00:00:00'}</td>
+      <td>
+        <button class="btn-primary" onclick="viewPauses('${employee.id}', '${(employee.name || '').replace(/'/g, "\\'")}')"><i data-feather="eye"></i> Ver</button>
+      </td>
+    `;
+    employeesList.appendChild(row);
+  });
+
+  // Convertir total global de segundos a HH:MM:SS
+  totalPauseTimeConsumed.textContent = secondsToTime(totalPauseTimeConsumedGlobal);
+  totalPauses.textContent = totalPausesGlobal;
+  totalPauseActive.textContent = totalPauseActiveGlobal;
+}
+
+// Funciones auxiliares
+function timeToSeconds(time) {
+  const [h, m, s] = time.split(':').map(Number);
+  return h * 3600 + m * 60 + s;
+}
+
+function secondsToTime(totalSeconds) {
+  const h = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+  const m = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+  const s = String(totalSeconds % 60).padStart(2, '0');
+  return `${h}:${m}:${s}`;
+}
+
 
     function renderActivePausesSummary(employees, stats) {
       const activePausesList = document.getElementById('active-pauses-list');
