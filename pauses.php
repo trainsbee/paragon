@@ -16,7 +16,7 @@ $users_json = json_encode($users);
 </head>
 <body>
       <!-- NAVBAR -->
-  <?php include 'partials/nav.php veriifcar la fecha del modal los segundos'; ?>
+  <?php include 'partials/nav.php'; ?>
 
   <div class="main-content">
     <div class="card module-pauses">
@@ -62,23 +62,26 @@ $users_json = json_encode($users);
                     </button>
         </div>
       </div>
+      
     </div>
-    </div>
-    <div class="card" hidden>
-      <div class="profile">
-        <p></p>
-      </div>
-        
-    </div>
-
-    <div class="table-container active-pauses-container" id="active-pauses-summary">
+<div class="table-container active-pauses-container" id="active-pauses-summary">
       <div class="table-header">
         <h3><i data-feather="clock"></i> Pausas Activas</h3>
       </div>
       <div class="table-wrapper">
-        <div id="active-pauses-list">
-          <p>Cargando pausas activas...</p>
-        </div>
+        <table class="table active-pauses-table">
+          <thead>
+            <tr>
+              <th>Empleado</th>
+              <th>Departamento</th>
+              <th>Hora de Inicio</th>
+              <th>Tiempo Transcurrido</th>
+              <th>Razón</th>
+            </tr>
+          </thead>
+         <tbody id="active-pauses-list">
+         </tbody>
+        </table>
       </div>
     </div>
 
@@ -100,12 +103,23 @@ $users_json = json_encode($users);
           </thead>
           <tbody id="employees-list">
             <tr>
+              
               <td colspan="6">Cargando empleados...</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
+    </div>
+
+    <div class="card" hidden>
+      <div class="profile">
+        <p></p>
+      </div>
+        
+    </div>
+
+    
   </div>
 </div>
     
@@ -126,9 +140,19 @@ $users_json = json_encode($users);
               <h3><i data-feather="clock"></i> Pausas Activas</h3>
             </div>
             <div class="table-wrapper">
-              <div id="active-pauses">
-                <p>Cargando pausas activas...</p>
-              </div>
+              <table class="table active-pauses-table">
+                <thead>
+                  <tr>
+                    <th>Empleado</th>
+                    <th>Departamento</th>
+                    <th>Hora de Inicio</th>
+                    <th>Tiempo Transcurrido</th>
+                    <th>Razón</th>
+                  </tr>
+                </thead>
+                <tbody id="active-pauses">
+                </tbody>
+              </table>
             </div>
           </div>
           <div class="table-container history-container">
@@ -136,9 +160,19 @@ $users_json = json_encode($users);
               <h3><i data-feather="history"></i> Historial</h3>
             </div>
             <div class="table-wrapper">
-              <div id="pauses-history">
-                <p>Cargando historial de pausas...</p>
-              </div>
+              <table class="table pause-table">
+                <thead>
+                  <tr>
+                    <th>Razón</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Duración</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody id="pauses-history">
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -257,9 +291,20 @@ $users_json = json_encode($users);
       
       employeesList.innerHTML = `
         <tr>
-          <td colspan="6">Cargando estadísticas de pausas...</td>
+          <td colspan="6"><div class="loader">
+                <span class="spinner1"></span>
+                <span class="spinner2"></span>
+                <span class="spinner3"></span>
+              </div></td>
         </tr>`;
-      activePausesList.innerHTML = '<p>Cargando pausas activas...</p>';
+      activePausesList.innerHTML =`
+        <tr>
+          <td colspan="6"><div class="loader">
+                <span class="spinner1"></span>
+                <span class="spinner2"></span>
+                <span class="spinner3"></span>
+              </div></td>
+        </tr>`;
       
       if (employees.length === 0) {
         employeesList.innerHTML = `
@@ -300,15 +345,16 @@ $users_json = json_encode($users);
 
     function renderEmployeesTable(employees, stats) {
       const employeesList = document.getElementById('employees-list');
+      const totalPauseTime = document.getElementById('total-pause-time'); 
       employeesList.innerHTML = '';
-      
+      let totalPauseTimeGlobal = 0;
       employees.forEach(employee => {
         const employeeStats = stats[employee.id] || {
           active_pauses: 0,
           total_pauses: 0,
           total_pause_time: '00:00:00'
         };
-        
+       //console.log(employeeStats.total_pause_time);
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${employee.name || 'N/A'}</td>
@@ -323,7 +369,11 @@ $users_json = json_encode($users);
           </td>
         `;
         employeesList.appendChild(row);
+        // SUMAR TODO LOS TIEMPOS DE PAUSA DE TODOS LOS EMPLEADOS
+       // totalPauseTimeGlobal += convertToSeconds(employeeStats.total_pause_time);
       });
+      //totalPauseTime.textContent = formatTime(totalPauseTimeGlobal);
+
     }
 
     function renderActivePausesSummary(employees, stats) {
@@ -348,19 +398,7 @@ $users_json = json_encode($users);
         return;
       }
       
-      let tableHTML = `
-        <table class="table active-pauses-table">
-          <thead>
-            <tr>
-              <th>Empleado</th>
-              <th>Departamento</th>
-              <th>Hora de Inicio</th>
-              <th>Tiempo Transcurrido</th>
-              <th>Razón</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
+      let tableHTML = ``;
       
       employeesWithPauses.forEach(emp => {
         if (emp.pauses && emp.pauses.length > 0) {
@@ -383,10 +421,6 @@ $users_json = json_encode($users);
         }
       });
       
-      tableHTML += `
-          </tbody>
-        </table>
-      `;
       
       activePausesList.innerHTML = tableHTML;
     }
@@ -452,8 +486,22 @@ $users_json = json_encode($users);
       const activePausesList = document.getElementById('active-pauses');
       const pausesHistoryList = document.getElementById('pauses-history');
       
-      activePausesList.innerHTML = 'Cargando...';
-      pausesHistoryList.innerHTML = 'Cargando...';
+      activePausesList.innerHTML = `
+        <tr>
+          <td colspan="6"><div class="loader">
+                <span class="spinner1"></span>
+                <span class="spinner2"></span>
+                <span class="spinner3"></span>
+              </div></td>
+        </tr>`;
+      pausesHistoryList.innerHTML = `
+        <tr>
+          <td colspan="6"><div class="loader">
+                <span class="spinner1"></span>
+                <span class="spinner2"></span>
+                <span class="spinner3"></span>
+              </div></td>
+        </tr>`;
       
       try {
         const response = await fetch(`api/get_pauses.php?employee_id=${currentEmployeeId}&start_date=${startDate}&end_date=${endDate}`);
@@ -470,7 +518,7 @@ $users_json = json_encode($users);
           if (pause.end_time) {
             const start = new Date(pause.start_time);
             const end = new Date(pause.end_time);
-            return total + Math.floor((end - start) / 1000);
+            return total + Math.round((end - start) / 1000);
           }
           return total;
         }, 0);
@@ -502,16 +550,6 @@ $users_json = json_encode($users);
           activePausesList.innerHTML = '<p>No hay pausas activas</p>';
         } else {
           activePausesList.innerHTML = `
-            <table class="table pause-table">
-              <thead>
-                <tr>
-                  <th>Razón</th>
-                  <th>Inicio</th>
-                  <th>Tiempo</th>
-                  <th>Estado</th>
-                </tr>
-              </thead>
-              <tbody>
                 ${activePauses.map(pause => {
                   const startTime = new Date(pause.start_time);
                   const formattedTime = startTime.toLocaleTimeString('es-HN', { 
@@ -531,8 +569,6 @@ $users_json = json_encode($users);
                     </tr>
                   `;
                 }).join('')}
-              </tbody>
-            </table>
           `;
         }
         
@@ -543,17 +579,6 @@ $users_json = json_encode($users);
           pausesHistoryList.innerHTML = '<p>No hay historial de pausas</p>';
         } else {
           pausesHistoryList.innerHTML = `
-            <table class="table pause-table">
-              <thead>
-                <tr>
-                  <th>Razón</th>
-                  <th>Inicio</th>
-                  <th>Fin</th>
-                  <th>Duración</th>
-                  <th>Estado</th>
-                </tr>
-              </thead>
-              <tbody>
                 ${historicalPauses.map(pause => {
                   const startTime = new Date(pause.start_time);
                   const endTime = new Date(pause.end_time);
@@ -573,8 +598,6 @@ $users_json = json_encode($users);
                     </tr>
                   `;
                 }).join('')}
-              </tbody>
-            </table>
           `;
         }
         

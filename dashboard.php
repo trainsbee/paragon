@@ -98,40 +98,7 @@
         </div>
 </div>
 <style>
-.loader{
-	display: flex;
-	flex-direction: row;
-  justify-content: center;
-}
 
-.loader span{
-	background: #ecf0f6;
-	border: 1pz solid rgba(144,163,204,0.24);
-	height: 20px;
-	width: 8px;
-	margin-left: 4px;
-	transform-origin: center center;
-	animation: .8s ease spinner1 999;
-}
-
-.loader .spinner2{
-	animation-delay: .1s;
-}
-
-.loader .spinner3{
-	animation-delay: .2s;
-}
-
-@keyframes spinner1{
-	0%,50%{
-		transform: scaleX(1) scaleY(1);
-	}
-	25%{
-		transform: scaleX(1.2) scaleY(1.6);
-		background: #90a3cc;
-		border-color: #335890;
-	}
-}
 </style>
 <div class="box-pause">
   <div class="loader">
