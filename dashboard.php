@@ -58,11 +58,11 @@
                 <h3>Stadistics</h3>
                 <div class="info-row">
                     <div class="box">
-                      <h4 id="total-pause-time">0</h4>
+                      <h4 id="total-pauses">0</h4>
                       <p>Pausas activas</p>
                     </div>
                     <div class="box">
-                      <h4 id="total-consumed-time">0</h4>
+                      <h4 id="total-pause-time">0</h4>
                       <p>Tiempo consumido</p>
                     </div>
                     <div class="box">
@@ -326,6 +326,8 @@
     }
 
     function getSecondsDiff(start, end) {
+      console.log(start);
+      console.log(end);
       const startDate = new Date(start);
       const endDate = new Date(end);
       return (endDate - startDate) / 1000;
@@ -384,8 +386,36 @@
 
         const totalPauseTime = `${hours}h ${minutes}m ${seconds}s`;
         const totalPauseElementTwo = document.getElementById('message-time-pause');
+        let TimeAuthorized = 15;
+        // Restar 15 minutos de la pausa total
+        let totalPauseTimeAuthorized = 15 * 60 - totalSeconds;
+        let hoursAuthorized = Math.floor(totalPauseTimeAuthorized / 3600);
+        let minutesAuthorized = Math.floor((totalPauseTimeAuthorized % 3600) / 60);
+        let secondsAuthorized = Math.floor(totalPauseTimeAuthorized % 60);
 
-        console.log(importantPauses);
+     
+        document.getElementById('total-remaining-time').textContent = `${hoursAuthorized}h ${minutesAuthorized}m ${secondsAuthorized}s`;
+
+
+     
+        let totalTimeConsumed = 0;
+        let hoursConsumed = 0;
+        let minutesConsumed = 0;
+        let secondsConsumed = 0;
+        //CONTAR DE PAUSAS IMPORTANTES 
+        importantPauses.forEach(element => {
+          // sumar en totalSeconds
+          totalTimeConsumed += Math.round(getSecondsDiff(element.start_time, element.end_time));
+          hoursConsumed = Math.floor(totalTimeConsumed / 3600);
+          minutesConsumed = Math.floor((totalTimeConsumed % 3600) / 60);
+          secondsConsumed = Math.floor(totalTimeConsumed % 60);
+        });
+          
+          const totalPauseTimeConsumed = `${hoursConsumed}h ${minutesConsumed}m ${secondsConsumed}s`;
+          const totalPauseElementConsumed = document.getElementById('message-time-pause-consumed');
+         
+          
+
 
         if (totalSeconds < 15 * 60) {
           totalPauseElementTwo.className = 'total-pause-time-two clr-success';
@@ -444,13 +474,15 @@
           }
           pausesByDate[date].push(pause);
         });
-
+        let totalPauses = 0;
         for (const [date, dailyPauses] of Object.entries(pausesByDate)) {
           const dateHeader = document.createElement('div');
           dateHeader.className = 'date-header';
           dateHeader.textContent = date;
           pauseList.appendChild(dateHeader);
-
+          
+          totalPauses += dailyPauses.length;
+          
           dailyPauses.forEach(pause => {
             //CREA UNA CAJA PARA CADA PAUSA
             const card = document.createElement('div');
@@ -510,6 +542,9 @@
         }
 
         const totalPauseElement = document.getElementById('total-pause-time');
+        const totalPausesElement = document.getElementById('total-pauses');
+        totalPausesElement.textContent = totalPauses;
+      
         if (totalPauseSeconds > 0) {
           const hours = Math.floor(totalPauseSeconds / 3600);
           const minutes = Math.floor((totalPauseSeconds % 3600) / 60);
