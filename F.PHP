@@ -378,7 +378,7 @@
 
     <script>
         // Initialize Feather Icons
-        feather.replace({ width: 16, height: 16 });
+        feather.replace();
 
         // Mobile Menu Toggle
         const menuToggle = document.getElementById('menuToggle');
@@ -392,7 +392,7 @@
             } else {
                 icon.setAttribute('data-feather', 'menu');
             }
-            feather.replace({ width: 20, height: 20 });
+            feather.replace();
         });
 
         navbarLinks.querySelectorAll('a').forEach(link => {
@@ -400,7 +400,7 @@
                 navbarLinks.classList.remove('active');
                 const icon = menuToggle.querySelector('i');
                 icon.setAttribute('data-feather', 'menu');
-                feather.replace({ width: 20, height: 20 });
+                feather.replace();
             });
         });
 
@@ -413,7 +413,7 @@
             modal.classList.add('show');
             document.body.style.overflow = 'hidden';
             
-            setTimeout(() => feather.replace({ width: 16, height: 16 }), 100);
+            setTimeout(() => feather.replace(), 100);
         }
 
         function closeCenterModal() {
@@ -434,7 +434,7 @@
             modal.classList.add('show');
             document.body.style.overflow = 'hidden';
             
-            setTimeout(() => feather.replace({ width: 16, height: 16 }), 100);
+            setTimeout(() => feather.replace(), 100);
         }
 
         function closeSideModal() {
@@ -492,7 +492,7 @@
             notification.innerHTML = `<i data-feather="${icons[type]}"></i> <span>${message}</span>`;
             
             container.appendChild(notification);
-            feather.replace({ width: 18, height: 18 });
+            feather.replace();
             
             setTimeout(() => {
                 notification.classList.add('show');

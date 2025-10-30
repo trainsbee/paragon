@@ -657,8 +657,4 @@ function secondsToTime(totalSeconds) {
       }
     };
   </script>
-  <script>
-    feather.replace();
-  </script>
-</body>
-</html>
+<?php include 'partials/footer.php'; ?>

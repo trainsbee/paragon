@@ -1,10 +1,12 @@
 <div id="navbar-container">
     <!-- El menú se cargará aquí dinámicamente con JavaScript -->
+ 
 </div>
 
 <script>
 // Verificar si el usuario está autenticado
 document.addEventListener('DOMContentLoaded', function() {
+
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const navbarContainer = document.getElementById('navbar-container');
     
@@ -46,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Insertar el menú en el contenedor
     navbarContainer.innerHTML = navbarHTML;
+    feather.replace();
 });
 
 // Función para cerrar sesión
@@ -53,5 +56,5 @@ function logout() {
     localStorage.removeItem('currentUser');
     window.location.href = 'auth.php';
 }
-  feather.replace();
+
 </script>

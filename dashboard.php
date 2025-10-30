@@ -7,9 +7,10 @@
   <title>Pausa App</title>
   <link rel="stylesheet" href="assets/css/main.css">
   <script src="https://unpkg.com/feather-icons"></script>
+
   <script>
     const router = "<?php echo BASE_URL; ?>";
-    console.log(router);
+
   </script>
   
 </head>
@@ -47,7 +48,7 @@
                         <input type="checkbox" id="pause-switch" onchange="togglePause()">
                         <span class="slider"></span>
                     </label>
-                    <span id="switch-status" class="switch-status inactive">Inactiva</span>
+                    <span id="switch-status" class="switch-status inactive"></span>
                 </div>
             </div>
                    
@@ -289,11 +290,11 @@
       pauseSwitch.checked = isActive;
       
       if (isActive) {
-        switchStatus.textContent = 'Activa';
+      //   switchStatus.textContent = 'Activa';
         switchStatus.className = 'switch-status active';
         reasonSelect.disabled = true;
       } else {
-        switchStatus.textContent = 'Inactiva';
+        // switchStatus.textContent = 'Inactiva';
         switchStatus.className = 'switch-status inactive';
         reasonSelect.disabled = false;
         reasonSelect.value = '';
@@ -697,5 +698,4 @@
       window.location.href = router + 'auth.php';
     }
   </script>
-</body>
-</html>
+<?php require_once 'partials/footer.php'; ?>
