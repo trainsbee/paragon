@@ -1,0 +1,3 @@
+const SUPABASE_URL = 'https://dvhzhszkulgsvfuuaatz.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2aHpoc3prdWxnc3ZmdXVhYXR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxNDY4NTgsImV4cCI6MjA3MTcyMjg1OH0.wy2a8vYUrDn9HPsqGC6Pcpo0Zt0KAnVBqBuTvlFJkvk'; // ⚠️ NO uses la service_role
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);

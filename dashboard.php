@@ -54,7 +54,7 @@
                    
                 </div>
           <div class="profile time-pauses">
-                <div class="form-container">
+          <div class="form-container">
             <div class="form-header">
                 <h3>Stadistics</h3>
                 <div class="info-row">
@@ -109,12 +109,10 @@
   </div>
   <div id="pause-list"></div>
 </div>
-
- 
 </div>
-            <div class="card">
+          <div class="card">
                 <h3>Actividad <span id="user-name"></span> <span id="user-role"></span><span id="user-department"></span></h3>
-                <div class="info-row">
+              <div class="info-row">
                     <span class="info-label">Sesiones hoy:</span>
                     <span class="info-value">342</span>
                 </div>
