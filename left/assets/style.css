@@ -1,0 +1,40 @@
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+body { background: #f4f6f9; padding: 20px; }
+.container { max-width: 1200px; margin: auto; background: white; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); overflow: hidden; }
+
+/* Navbar Tabs */
+.navbar { display: flex; background: #2c3e50; }
+.navbar button {
+  flex: 1; padding: 15px; background: none; border: none; color: white; font-size: 16px; cursor: pointer; transition: 0.3s;
+}
+.navbar button:hover { background: #34495e; }
+.navbar button.active { background: #1abc9c; font-weight: bold; }
+
+/* Tab Content */
+.tab-content { display: none; padding: 20px; }
+.tab-content.active { display: block; }
+
+/* Sections */
+section { margin-bottom: 30px; }
+h2, h3, h4 { color: #2c3e50; margin-bottom: 10px; }
+input, textarea, button, select { margin: 5px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+button { background: #1abc9c; color: white; cursor: pointer; }
+button:hover { background: #16a085; }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background: #f2f2f2; }
+tr:nth-child(even) { background: #f9f9f9; }
+
+/* Modal */
+#modal {
+  display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  background: white; border: 2px solid #2c3e50; padding: 20px; z-index: 1000; max-width: 90%; max-height: 90%; overflow: auto;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3); border-radius: 8px;
+}
+#modal button { margin: 5px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar { flex-direction: column; }
+  .navbar button { padding: 12px; }
+}
